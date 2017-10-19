@@ -8,6 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <time.h>
+#include "red-black-tree.h"
 
 #define MAXLINE      200
 #define MAGIC_NUMBER 0x0133C8F9
@@ -45,8 +48,10 @@ int menu()
 
 int main(int argc, char **argv)
 {
-    char str[MAXLINE];
-    int opcio;
+    char str[MAXLINE], aux_str;
+    int opcio, len_str;
+    RBTree *tree;
+    RBData *treeData;
 
     if (argc != 1)
         printf("Opcions de la linia de comandes ignorades\n");
@@ -64,7 +69,9 @@ int main(int argc, char **argv)
                 str[strlen(str)-1]=0;
 
                 /* Falta codi */
-
+                srand(time(NULL));
+                tree = (RBTree *) malloc(sizeof(RBTree));
+                initTree(tree);
                 break;
 
             case 2:
@@ -89,9 +96,19 @@ int main(int argc, char **argv)
                 printf("Introdueix la paraula: ");
                 fgets(str, MAXLINE, stdin);
                 str[strlen(str)-1]=0;
-
-                /* Falta codi */
-
+                
+                len_str = strlen(str)-1;
+                aux_str = malloc(sizeof(char)*len_str);
+                treeData = findNode(tree, aux_str);
+                
+                if(treeData){
+                    printf("El string %s apareix %d cops a l'arbre.\n", treeData->key, treeData->num_vegades);
+                }else{
+                    printf("La parauala %s no es troba en el arbol", aux_str);
+                }
+                
+                strcpy(aux_str,str);
+                
                 break;
 
             case 5:
